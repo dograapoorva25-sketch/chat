@@ -1,10 +1,39 @@
 const socket = io({
+
+
+
+
+  
   transports: ["websocket"]
 });
 
+/* ======================
+   PASSWORD SYSTEM
+====================== */
 
+const COMMON_PASSWORD = "chat123";
+
+const loginContainer = document.getElementById("login-container");
 const joinContainer = document.getElementById("join-container");
 const chatContainer = document.getElementById("chat-container");
+
+const loginBtn = document.getElementById("login-btn");
+const loginPass = document.getElementById("login-pass");
+
+loginBtn.addEventListener("click", () => {
+  if (loginPass.value !== COMMON_PASSWORD) {
+    alert("❌ Wrong password");
+    return;
+  }
+
+  loginContainer.classList.add("hidden");
+  joinContainer.classList.remove("hidden");
+});
+
+/* ======================
+   CHAT CODE (UNCHANGED)
+====================== */
+
 const joinBtn = document.getElementById("join-btn");
 const sendBtn = document.getElementById("send-btn");
 
@@ -15,17 +44,17 @@ const usersDiv = document.getElementById("users");
 const joinError = document.getElementById("join-error");
 
 // Join chat
-joinBtn.onclick = () => {
+joinBtn.addEventListener("click", () => {
   const username = usernameInput.value.trim();
   if (!username) return;
 
   socket.emit("join", username);
   joinContainer.classList.add("hidden");
   chatContainer.classList.remove("hidden");
-};
+});
 
 // Send message
-sendBtn.onclick = sendMessage;
+sendBtn.addEventListener("click", sendMessage);
 messageInput.addEventListener("keypress", e => {
   if (e.key === "Enter") sendMessage();
 });
